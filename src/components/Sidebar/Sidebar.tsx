@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import SidebarHeader from './SidebarHeader';
 import MarkerList from './MarkerList';
 import PolygonInfo from './PolygonInfo';
+import { Divider } from '../ui/Primitives';
 import type { MarkerData, PolygonData } from '../../types';
 
 const SidebarWrapper = styled.aside<{ $collapsed: boolean }>`
@@ -30,12 +31,6 @@ const Content = styled.div`
   padding: 0 16px;
   display: flex;
   flex-direction: column;
-`;
-
-const Divider = styled.hr`
-  border: none;
-  border-top: 2px solid var(--color-border);
-  margin: 8px 0;
 `;
 
 const Footer = styled.div`
