@@ -12,18 +12,23 @@ export function useMapState() {
   const [polygon, setPolygon] = useState<PolygonData | null>(saved.polygon);
   const [drawingMode, setDrawingMode] = useState<DrawingMode>('marker');
   const [selectedMarkerId, setSelectedMarkerId] = useState<string | null>(null);
+  const [isSynced, setIsSynced] = useState(true);
+
+  const markDirty = () => setIsSynced(false);
 
   const addMarker = useCallback((lng: number, lat: number) => {
     setMarkers((prev) => [
       ...prev,
       { id: uuid(), longitude: lng, latitude: lat },
     ]);
+    markDirty();
   }, []);
 
   const removeMarker = useCallback(
     (id: string) => {
       setMarkers((prev) => prev.filter((m) => m.id !== id));
       if (selectedMarkerId === id) setSelectedMarkerId(null);
+      markDirty();
     },
     [selectedMarkerId]
   );
@@ -32,6 +37,7 @@ export function useMapState() {
     setPolygon((prev) => ({
       vertices: [...(prev?.vertices ?? []), [lng, lat]],
     }));
+    markDirty();
   }, []);
 
   const clearAll = useCallback(() => {
@@ -39,10 +45,12 @@ export function useMapState() {
     setPolygon(null);
     setSelectedMarkerId(null);
     persist(EMPTY_STATE);
+    setIsSynced(true);
   }, [persist]);
 
   const save = useCallback(() => {
     persist({ markers, polygon });
+    setIsSynced(true);
   }, [markers, polygon, persist]);
 
   const loadState = useCallback(
@@ -50,6 +58,7 @@ export function useMapState() {
       setMarkers(state.markers);
       setPolygon(state.polygon);
       persist(state);
+      setIsSynced(true);
     },
     [persist]
   );
@@ -59,6 +68,7 @@ export function useMapState() {
     polygon,
     drawingMode,
     selectedMarkerId,
+    isSynced,
     setDrawingMode,
     setSelectedMarkerId,
     addMarker,

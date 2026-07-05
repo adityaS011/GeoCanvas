@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import MapView from './components/Map/MapView';
 import Sidebar from './components/Sidebar/Sidebar';
 import Toolbar from './components/Toolbar/Toolbar';
@@ -9,6 +10,7 @@ export default function App() {
     polygon,
     drawingMode,
     selectedMarkerId,
+    isSynced,
     setDrawingMode,
     setSelectedMarkerId,
     addMarker,
@@ -19,12 +21,16 @@ export default function App() {
     loadState,
   } = useMapState();
 
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+
   return (
     <div className="app">
       <Sidebar
         markers={markers}
         polygon={polygon}
         selectedMarkerId={selectedMarkerId}
+        collapsed={sidebarCollapsed}
+        onToggle={() => setSidebarCollapsed((c) => !c)}
         onSelectMarker={setSelectedMarkerId}
         onRemoveMarker={removeMarker}
       />
@@ -34,6 +40,7 @@ export default function App() {
           drawingMode={drawingMode}
           markers={markers}
           polygon={polygon}
+          isSynced={isSynced}
           onModeChange={setDrawingMode}
           onSave={save}
           onClear={clearAll}

@@ -14,6 +14,12 @@ export default function MarkerList({
   onSelect,
   onRemove,
 }: MarkerListProps) {
+  const countBadge = markers.length > 0 && (
+    <span className="count-badge">
+      {String(markers.length).padStart(2, '0')}
+    </span>
+  );
+
   if (markers.length === 0) {
     return (
       <Panel title="Markers">
@@ -23,7 +29,7 @@ export default function MarkerList({
   }
 
   return (
-    <Panel title={`Markers (${markers.length})`}>
+    <Panel title="Markers" actions={countBadge}>
       <ul className="marker-list">
         {markers.map((m, i) => (
           <li
@@ -34,7 +40,7 @@ export default function MarkerList({
             <div className="marker-item__info">
               <span className="marker-item__index">{i + 1}</span>
               <span className="marker-item__coords">
-                {m.latitude.toFixed(4)}, {m.longitude.toFixed(4)}
+                {m.latitude.toFixed(4)},&nbsp;&nbsp;{m.longitude.toFixed(4)}
               </span>
             </div>
             <button
