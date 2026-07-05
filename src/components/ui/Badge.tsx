@@ -1,3 +1,7 @@
+import styled from 'styled-components';
+
+const StyledBadge = styled.span<{ $active?: boolean }>``;
+
 interface BadgeProps {
   label: string;
   active?: boolean;
@@ -6,13 +10,13 @@ interface BadgeProps {
 
 export default function Badge({ label, active, onClick }: BadgeProps) {
   return (
-    <span
-      className={`badge ${active ? 'badge--active' : ''}`}
+    <StyledBadge
+      $active={active}
       onClick={onClick}
       role={onClick ? 'button' : undefined}
       tabIndex={onClick ? 0 : undefined}
     >
       {label}
-    </span>
+    </StyledBadge>
   );
 }
